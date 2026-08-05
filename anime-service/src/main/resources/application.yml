@@ -3,4 +3,4 @@ spring:
     name: anime-service
 server:
   servlet:
-    context-path: /${spring.application.name}
+    context-path: /
