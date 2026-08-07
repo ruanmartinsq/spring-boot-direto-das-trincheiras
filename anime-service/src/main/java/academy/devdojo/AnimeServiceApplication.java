@@ -8,12 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"outside.devdojo, academy.devdojo"})
 public class AnimeServiceApplication {
-
 	public static void main(String[] args) {
-		var applicationContext = SpringApplication.run(AnimeServiceApplication.class, args);
-		Arrays.stream(applicationContext.getBeanDefinitionNames()).forEach(System.out::println);
+		SpringApplication.run(AnimeServiceApplication.class, args);
 	}
-
 }
