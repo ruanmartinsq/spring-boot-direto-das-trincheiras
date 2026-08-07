@@ -1,6 +1,14 @@
 spring:
   application:
     name: anime-service
+  threads:
+    virtual:
+      enabled: true #para ativar o uso de threads virtuais
 server:
   servlet:
     context-path: /
+  error:
+    include-stacktrace: ON_PARAM
+  tomcat:
+    threads:
+      max: 20 #20 clientes fazem requisição, o vigésimo primeiro tem que esperar | por padrao tem 200 threads
