@@ -1,9 +1,8 @@
 package academy.devdojo.controller;
 
+import academy.devdojo.domain.Anime;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,9 +13,18 @@ import java.util.concurrent.TimeUnit;
 public class AnimeController {
 
     @GetMapping
-    public List<String> listarAnimes() throws InterruptedException {
-        log.info(Thread.currentThread().getName());
-        TimeUnit.SECONDS.sleep(1);
-        return List.of("One piece", "Death Note", "Naruto");
+    public List<Anime> listarAnimes(@RequestParam (required = false) String name) {
+        var animes = Anime.getAnimes();
+        if (name == null) return animes;
+
+        return animes.stream().filter(anime -> anime.getName().equalsIgnoreCase(name)).toList();
+    }
+
+    @GetMapping("{id}")
+    public Anime findById(@PathVariable Long id) {
+        return Anime.getAnimes()
+                .stream()
+                .filter(anime -> anime.getId().equals(id))
+                .findFirst().orElse(null);
     }
 }
