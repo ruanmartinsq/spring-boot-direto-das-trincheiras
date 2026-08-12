@@ -1,6 +1,8 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
+import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.response.ProducerGetResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -17,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ProduceController {
 
     @GetMapping
-    public List<Producer> listarProducers(@RequestParam (required = false) String name) {
+    public List<Producer> listarProducers(@RequestParam(required = false) String name) {
         var producers = Producer.getProducers();
         if (name == null) return producers;
 
@@ -35,16 +38,26 @@ public class ProduceController {
     //não é Idempotente
     //quando vc executa varias vezes da o mesmo resultado/retorno -> idempotente
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE,
-    headers = "x-api-key")
-    public ResponseEntity<Producer> save(@RequestBody Producer producer, @RequestHeader HttpHeaders headers) { //Spring, pegue os headers que vieram na requisição e coloque eles nessa variável headers."
+            headers = "x-api-key")
+    public ResponseEntity<ProducerGetResponse> save(@RequestBody ProducerPostRequest producerPostRequest, @RequestHeader HttpHeaders headers) { //Spring, pegue os headers que vieram na requisição e coloque eles nessa variável headers."
         log.info("{}, headers");
-        producer.setId(ThreadLocalRandom.current().nextLong(100_000));
+        //vamos montar o objeto
+        var producer = Producer.builder()
+                .name(producerPostRequest.getName())
+                .id(ThreadLocalRandom.current().nextLong(100_000))
+                .createdAt(LocalDateTime.now())
+                .build();
+
         Producer.getProducers().add(producer);
 
-        var responseHeaders = new HttpHeaders();
-        responseHeaders.add("Authorization", "My Key");
+        var response = ProducerGetResponse
+                .builder()
+                .id(producer.getId())
+                .name(producer.getName())
+                .createdAt(producer.getCreatedAt())
+                .build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).headers(responseHeaders).body(producer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
         //return ResponseEntity.noContent().build(); //fez com sucesso mas nao tem necessidade de retornar um conteudo
         //return ResponseEntity.ok(producer);
         //return ResponseEntity.status(HttpStatus.CREATED).body(producer);
