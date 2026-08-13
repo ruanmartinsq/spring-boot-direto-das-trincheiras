@@ -1,9 +1,11 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
+import academy.devdojo.mapper.ProducerMapper;
 import academy.devdojo.request.ProducerPostRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping("v1/producer") //se colocar v1/producers/ tem que cuidar/tratar dele na segurança tb
 @Slf4j
 public class ProduceController {
+    private static final ProducerMapper MAPPER = ProducerMapper.INSTANCE;
 
     @GetMapping
     public List<Producer> listarProducers(@RequestParam(required = false) String name) {
@@ -41,23 +44,13 @@ public class ProduceController {
             headers = "x-api-key")
     public ResponseEntity<ProducerGetResponse> save(@RequestBody ProducerPostRequest producerPostRequest, @RequestHeader HttpHeaders headers) { //Spring, pegue os headers que vieram na requisição e coloque eles nessa variável headers."
         log.info("{}, headers");
-        //vamos montar o objeto
-        var producer = Producer.builder()
-                .name(producerPostRequest.getName())
-                .id(ThreadLocalRandom.current().nextLong(100_000))
-                .createdAt(LocalDateTime.now())
-                .build();
 
-        Producer.getProducers().add(producer);
+        var producer = MAPPER.toProducer(producerPostRequest);
+        var response = MAPPER.toProducerGetResponse(producer);
 
-        var response = ProducerGetResponse
-                .builder()
-                .id(producer.getId())
-                .name(producer.getName())
-                .createdAt(producer.getCreatedAt())
-                .build();
-
+        Producer.getProducers().add(producer); //add no list
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
         //return ResponseEntity.noContent().build(); //fez com sucesso mas nao tem necessidade de retornar um conteudo
         //return ResponseEntity.ok(producer);
         //return ResponseEntity.status(HttpStatus.CREATED).body(producer);
