@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 //o mapper ele pega um obj e tenta fazer o mapeamento para o target
 @Mapper
 public interface ProducerMapper {
@@ -17,4 +19,8 @@ public interface ProducerMapper {
     Producer toProducer(ProducerPostRequest postRequest);
 
     ProducerGetResponse toProducerGetResponse(Producer producer);
+    List<ProducerGetResponse> toProducerGetResponseList(List<Producer> producers);
 }
+
+
+

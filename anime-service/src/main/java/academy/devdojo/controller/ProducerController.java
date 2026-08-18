@@ -5,37 +5,44 @@ import academy.devdojo.mapper.ProducerMapper;
 import academy.devdojo.request.ProducerPostRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Mapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @RestController //colocar ("v1") -> estará definindo o nome do Bean (o nome do componente)
 @RequestMapping("v1/producer") //se colocar v1/producers/ tem que cuidar/tratar dele na segurança tb
 @Slf4j
-public class ProduceController {
+public class ProducerController {
     private static final ProducerMapper MAPPER = ProducerMapper.INSTANCE;
 
     @GetMapping
-    public List<Producer> listarProducers(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<ProducerGetResponse>> listarProducers(@RequestParam(required = false) String name) {
+        log.debug("Request reveived to list all producers, param name '{}'", name);
         var producers = Producer.getProducers();
-        if (name == null) return producers;
+        var producersGetResponseList = MAPPER.toProducerGetResponseList(producers);
 
-        return producers.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).toList();
+        if (name == null) return ResponseEntity.ok(producersGetResponseList);
+
+        var response = producersGetResponseList.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).toList();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("{id}")
-    public Producer findById(@PathVariable Long id) {
-        return Producer.getProducers()
+    public ResponseEntity<ProducerGetResponse> findById(@PathVariable Long id) {
+        log.debug("Request to find producer by id: '{}'", id);
+
+        var producerGetResponse = Producer.getProducers()
                 .stream()
                 .filter(producer -> producer.getId().equals(id))
-                .findFirst().orElse(null);
+                .findFirst()
+                .map(MAPPER::toProducerGetResponse)
+                .orElse(null);
+
+        return ResponseEntity.ok(producerGetResponse);
     }
 
     //não é Idempotente
