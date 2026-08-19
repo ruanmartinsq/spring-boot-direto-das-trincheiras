@@ -15,7 +15,7 @@ public class HeroController {
     }
 
     @GetMapping("filter")
-    public List<String> listAllHeroesParam(@RequestParam (defaultValue = "") String name) {
+    public List<String> listAllHeroesParam(@RequestParam(defaultValue = "") String name) {
         return HEROES.stream().filter(hero -> hero.equalsIgnoreCase(name)).toList();
     }
 

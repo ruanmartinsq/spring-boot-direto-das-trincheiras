@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -39,8 +40,8 @@ public class ProducerController {
                 .stream()
                 .filter(producer -> producer.getId().equals(id))
                 .findFirst()
-                .map(MAPPER::toProducerGetResponse)
-                .orElse(null);
+                .map(MAPPER::toProducerGetResponse) //producer -> MAPPER.toProducerGetResponse(producer)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not Found"));
 
         return ResponseEntity.ok(producerGetResponse);
     }
@@ -61,5 +62,18 @@ public class ProducerController {
         //return ResponseEntity.noContent().build(); //fez com sucesso mas nao tem necessidade de retornar um conteudo
         //return ResponseEntity.ok(producer);
         //return ResponseEntity.status(HttpStatus.CREATED).body(producer);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        log.debug("Request to delete producer by id: {}", id);
+        var producerToDelete = Producer.getProducers()
+                .stream()
+                .filter(producer -> producer.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not Found"));
+
+        Producer.getProducers().remove(producerToDelete);
+        return ResponseEntity.noContent().build();
     }
 }
