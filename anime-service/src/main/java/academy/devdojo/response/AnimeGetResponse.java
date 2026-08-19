@@ -2,6 +2,7 @@ package academy.devdojo.response;
 
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AnimeGetResponse {
+    @EqualsAndHashCode.Include
     private Long id;
     private String name;
 }
