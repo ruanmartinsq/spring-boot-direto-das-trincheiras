@@ -1,15 +1,15 @@
 package academy.devdojo.request;
 
-//pode ser DT0 também
-
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@Builder
 @ToString
-//nao precisa do builder pq geralmente ja passam valor pra ele por parametro
-public class ProducerPostRequest {
+public class ProducerPutRequest {
+    private Long id;
     private String name;
 }

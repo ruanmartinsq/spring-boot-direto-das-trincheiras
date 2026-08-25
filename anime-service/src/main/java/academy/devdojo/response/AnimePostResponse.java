@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class AnimePostResponse {
-    private Long id;
-    private String name;
+
+
 
 }
