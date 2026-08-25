@@ -19,7 +19,7 @@ public class ProducerHardCodedRepository {
         PRODUCERS.addAll(List.of(mappa, kyotoAnimattion, madHouse));
     }
 
-    public static List<Producer> findAll() {
+    public List<Producer> findAll() {
         return PRODUCERS;
     }
 
