@@ -28,7 +28,7 @@ public interface ProducerMapper {
     //producer.setId(request.getId());
     //producer.setName(request.getName());
     //producer.setCreatedAt(createdAt);
-    Producer toProducer(ProducerPutRequest request, LocalDateTime createdAt);
+    Producer toProducer(ProducerPutRequest request);
 
     ProducerGetResponse toProducerGetResponse(Producer producer);
     List<ProducerGetResponse> toProducerGetResponseList(List<Producer> producers);
