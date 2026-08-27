@@ -4,6 +4,7 @@ import academy.devdojo.mapper.ProducerMapper;
 import academy.devdojo.request.ProducerPostRequest;
 import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
+import academy.devdojo.response.ProducerPostResponse;
 import academy.devdojo.service.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -47,14 +48,14 @@ public class ProducerController {
     //quando vc executa varias vezes da o mesmo resultado/retorno -> idempotente
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE,
             headers = "x-api-key")
-    public ResponseEntity<ProducerGetResponse> save(@RequestBody ProducerPostRequest producerPostRequest, @RequestHeader HttpHeaders headers) { //Spring, pegue os headers que vieram na requisição e coloque eles nessa variável headers."
+    public ResponseEntity<ProducerPostResponse> save(@RequestBody ProducerPostRequest producerPostRequest, @RequestHeader HttpHeaders headers) { //Spring, pegue os headers que vieram na requisição e coloque eles nessa variável headers."
         log.info("{}, headers");
 
         var producer = MAPPER.toProducer(producerPostRequest);
         var producerSaved = service.save(producer);
-        var producerGetResponse = MAPPER.toProducerGetResponse(producerSaved);
+        var producerPostResponse = MAPPER.toProducerPostResponse(producerSaved);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(producerPostResponse);
         //return ResponseEntity.noContent().build(); //fez com sucesso mas nao tem necessidade de retornar um conteudo
         //return ResponseEntity.ok(producer);
         //return ResponseEntity.status(HttpStatus.CREATED).body(producer);
