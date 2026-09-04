@@ -22,10 +22,10 @@ import java.util.Optional;
 class ProducerHardCodedRepositoryTest {
     @InjectMocks
     private ProducerHardCodedRepository repository;
-    private final List<Producer> producerList = new ArrayList<>();
 
     @Mock
     private ProducerData producerData;
+    private List<Producer> producerList;
 
     //sempre executado antes de todos os testes, cada metodo executado (10 testes, executado 10 vezes)
     @BeforeEach
@@ -34,7 +34,7 @@ class ProducerHardCodedRepositoryTest {
             var ufotable = Producer.builder().id(1L).name("ufotable").createdAt(LocalDateTime.now()).build();
             var witStudio = Producer.builder().id(2L).name("Wit Studio").createdAt(LocalDateTime.now()).build();
             var studioGhibli = Producer.builder().id(3L).name("Studio Ghibli").createdAt(LocalDateTime.now()).build();
-            producerList.addAll(List.of(ufotable, witStudio, studioGhibli));
+            producerList = new ArrayList<>(List.of(ufotable, witStudio, studioGhibli));
         }
     }
 
