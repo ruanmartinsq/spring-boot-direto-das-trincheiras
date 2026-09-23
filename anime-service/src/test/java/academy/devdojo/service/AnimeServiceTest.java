@@ -49,7 +49,7 @@ class AnimeServiceTest {
     @Test
     @Order(2)
     @DisplayName("findAll returns list with found object when name exists")
-    void findAll_returnsFoundAnime_WhenProducerIsFound() {
+    void findAll_returnsFoundAnime_WhenAnimeIsFound() {
         var anime = animesList.getFirst();
         var expectedAnimeFound = singletonList(anime);
 

@@ -75,7 +75,7 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/animes?name=Ufotable findAll returns list with found object when name exists")
+    @DisplayName("GET v1/producer?name=Ufotable findAll returns list with found object when name exists")
     @Order(2)
     void findAll_ReturnsFoundProducer_WhenNameIsFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
@@ -90,7 +90,7 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/animes?name=x findAll returns empty list when name is not found")
+    @DisplayName("GET v1/producer?name=x findAll returns empty list when name is not found")
     @Order(3)
     void findAll_ReturnsEmptyList_WhenNameIsNull() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
@@ -105,7 +105,7 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/animes/1 returns a producer with given id")
+    @DisplayName("GET v1/producer/1 returns a producer with given id")
     @Order(4)
     void findById_ReturnsProducerById_WhenSuccessful() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
@@ -121,7 +121,7 @@ class ProducerControllerTest {
 
     //raining days
     @Test
-    @DisplayName("GET v1/animes/99 throws ResponseStatusException 404 when producer is not found")
+    @DisplayName("GET v1/producer/99 throws ResponseStatusException 404 when producer is not found")
     @Order(5)
     void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
