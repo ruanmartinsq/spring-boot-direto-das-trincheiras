@@ -15,3 +15,8 @@ server:
   tomcat:
     threads:
       max: 20 #20 clientes fazem requisição, o vigésimo primeiro tem que esperar | por padrao tem 200 threads
+
+database:
+  url: localhost:3306
+  username: devdojo
+  password: devdojo #bom definir um PADRÃO ao executar e apenas em casos especificos troca o profile (MONGO)

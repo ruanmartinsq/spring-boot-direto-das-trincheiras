@@ -1,15 +1,26 @@
 package academy.devdojo.config;
 import external.dependency.Connection;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class ConnectionConfiguration {
-    @Bean //se vc precisar de criar um obj do tipo connection, vc vem nesse bean e usa esse metodo para injetar no connection
-    @Primary //se tiver 2 usa esse como padrao
+    @Value("${database.url}")
+    private String url;
+    @Value("${database.username}")
+    private String username;
+    @Value("${database.password}")
+    private String password;
+    //carregamento deles é quando roda a aplicação
+
+    //estamos rodando o default e nele nao temos url, username e password (application.yml)
+
+    @Bean
+    @Primary
     public Connection connectionMySql() {
-        return new Connection("localhost", "devdojoMySql", "ruan");
+        return new Connection(url, username, password);
     }
 
     @Bean(name = "connectionMongoDB") //passa um nome especifico
