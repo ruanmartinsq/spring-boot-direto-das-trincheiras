@@ -1,5 +1,6 @@
 package academy.devdojo.repository;
 
+import academy.devdojo.commons.AnimeUtils;
 import academy.devdojo.domain.Anime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -23,12 +24,12 @@ class AnimeHardCodedRepositoryTest {
     private AnimeData animeData;
     private List<Anime> animeList;
 
+    @InjectMocks
+    private AnimeUtils animeUtils;
+
     @BeforeEach
     void init() {
-        var bleach = Anime.builder().id(1L).name("Bleach").build();
-        var aot = Anime.builder().id(2L).name("Atack on Titan").build();
-        var sao = Anime.builder().id(3L).name("Sword Art Online").build();
-        animeList = new ArrayList<>(List.of(bleach, aot, sao));
+        animeList = animeUtils.newAnimeList();
     }
 
     @Test
@@ -72,11 +73,7 @@ class AnimeHardCodedRepositoryTest {
     void save_CreatesAnime_WhenNameIsNull() {
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
 
-        var animeToSave = Anime.builder()
-                .id(99L)
-                .name("Skate Park")
-                .build();
-
+        var animeToSave = animeUtils.newAnimeSave();
         Anime anime = repository.save(animeToSave);
 
         Assertions.assertThat(anime)
