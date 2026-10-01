@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class ConnectionConfiguration {
@@ -19,13 +20,16 @@ public class ConnectionConfiguration {
 
     @Bean
     @Primary
+    @Profile("mysql") //se profile for isso executa embaixo
     public Connection connectionMySql() {
         return new Connection(url, username, password);
     }
 
     @Bean(name = "connectionMongoDB") //passa um nome especifico
+    @Profile("mongo") //se profile for isso executa em baixo
+    //bean so é criado se o objeto for criado (bean objeto gerenciado pelo spring)
     public Connection connectionMongo() {
-        return new Connection("localhost", "devdojoMongo", "ruan");
+        return new Connection(url, username, password);
     }
 
 }
