@@ -1,16 +1,11 @@
 package academy.devdojo.repository;
 
 import academy.devdojo.domain.Producer;
-import external.dependency.Connection;
-import lombok.Getter;
+import academy.devdojo.config.Connection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +15,10 @@ import java.util.Optional;
 public class ProducerHardCodedRepository {
     private final ProducerData producerData;
     // @Qualifier(value = "connectionMongoDB") passa um valor especifico, mas, mantebdi o connection
-    //private final Connection connection; //da pra passar o Bean especifico
+    private final Connection connection; //da pra passar o Bean especifico
 
     public List<Producer> findAll() {
+        log.info("Connection {}", connection);
         return producerData.getProducers();
     }
 

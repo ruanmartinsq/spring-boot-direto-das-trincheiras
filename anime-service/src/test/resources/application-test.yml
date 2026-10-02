@@ -1,0 +1,4 @@
+database:
+  url: localhost:9999
+  username: test
+  password: test #bom definir um PADRÃO ao executar e apenas em casos especificos troca o profile (MONGO)
