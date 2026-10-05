@@ -19,6 +19,8 @@ server:
       max: 20 #20 clientes fazem requisição, o vigésimo primeiro tem que esperar | por padrao tem 200 threads
 
 database:
-  url: localhost:3306
-  username: devdojo
-  password: devdojo #bom definir um PADRÃO ao executar e apenas em casos especificos troca o profile (MONGO)
+  url: ${DB_URL:localhost}:${DB_PORT:3306}
+  username: ${LOCAL_USERNAME:ruan2} #: seta um valor padrao
+  password: ${LOCAL_PASSWORD:ruandb2} #bom definir um PADRÃO ao executar e apenas em casos especificos troca o profile (MONGO)
+
+#DATABASE_PASSWORD vc faz um replace no valor que passar/sobrescrevendo a propriedade
